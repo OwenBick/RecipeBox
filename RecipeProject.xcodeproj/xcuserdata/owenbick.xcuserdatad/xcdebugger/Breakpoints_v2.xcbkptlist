@@ -7,32 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "44A9B00B-6A57-4BFD-A6AA-90D5C2C73B67"
+            uuid = "8F6833DB-F827-4F2A-92EB-BE3EA2F5E40D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RecipeProject/Controllers/SearchViewController.swift"
+            filePath = "RecipeProject/Controllers/RecipeDetailViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "fetchRecipes(from:for:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "15D369B1-7D10-4F31-8CE4-B92B8F3A6686"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RecipeProject/Controllers/SearchViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "fetchRecipes(from:for:)"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "fetchRecipe(from:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -1,19 +1,20 @@
 //
-//  HomeViewController.swift
+//  CategoryViewController.swift
 //  RecipeProject
 //
-//  Created by Owen Bick on 10/31/20.
+//  Created by Owen Bick on 11/1/20.
 //
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class CategoryViewController: UIViewController {
     //MARK: - Outlets
     @IBOutlet var collectionView: UICollectionView!
     
     //MARK: - Properties
-    var allCategories = [Category]()
-    var category: String?
+    var allMeals = [Recipe]()
+    var categoryName: String?
+    var recipe: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,43 +32,45 @@ class HomeViewController: UIViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let categoryName = allCategories[indexPath.row].strCategory {
-            category = categoryName
+        if let recipeID = allMeals[indexPath.row].idMeal {
+            recipe = recipeID
         }
         
-        performSegue(withIdentifier: "categorySegue", sender: self)
+        performSegue(withIdentifier: "recipeSegue", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? CategoryViewController {
-            vc.categoryName = category ?? "Chicken"
+        if let vc = segue.destination as? RecipeDetailViewController {
+            vc.recipeId = recipe ?? "52772"
         }
     }
 }
 
+
 //MARK: - CollectionView Methods
-extension HomeViewController: UICollectionViewDelegate { }
+extension CategoryViewController: UICollectionViewDelegate { }
 
 
-extension HomeViewController: UICollectionViewDataSource {
+extension CategoryViewController: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return allCategories.count
+        return allMeals.count
     }
     
 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as! CategoryCell
-        let category = allCategories[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
+        
+        let recipe = allMeals[indexPath.row]
             
-        if let categoryName = category.strCategory {
-            cell.categoryName?.text = categoryName
-            cell.categoryName?.layer.cornerRadius = 10
+        if let categoryName = recipe.strMeal {
+            cell.recipeName?.text = categoryName
+            cell.recipeName?.layer.cornerRadius = 10
         }
         //If the current recipe has an image
-        if let imageString = category.strCategoryThumb {
+        if let imageString = recipe.strMealThumb {
             //If the string can be converted into a URL
             if let imageUrl = URL(string: imageString) {
                 //Try and see if the URL can be converted into Data
@@ -75,11 +78,11 @@ extension HomeViewController: UICollectionViewDataSource {
                     //See if that Data can create a UIImage
                     if let image = UIImage(data: data) {
                         //If so set the recipe image to the UIImage you just created
-                        cell.categoryImage.image = image
-                        cell.categoryImage.layer.cornerRadius = 8
+                        cell.recipeImage.image = image
+                        cell.recipeImage.layer.cornerRadius = 8
                     } else {
                         //If not set the recipe image to the '' SF Symbol
-                        cell.categoryImage.image = UIImage(systemName: "questionmark.square")
+                        cell.recipeImage.image = UIImage(systemName: "questionmark.square")
                     }
                 }
             }
@@ -89,7 +92,7 @@ extension HomeViewController: UICollectionViewDataSource {
     
     //MARK: - Creating URL
     func createCategoryUrl() -> URL? {
-        let urlString = "https://www.themealdb.com/api/json/v1/1/categories.php"
+        let urlString = "https://www.themealdb.com/api/json/v1/1/filter.php?c=\(categoryName!)"
         //Return a URL using the string value
         return URL(string: urlString)
     }
@@ -115,9 +118,9 @@ extension HomeViewController: UICollectionViewDataSource {
                         
                         
                         //Try and decode someData into array of Recipes using Recipe template
-                        let downloadedResults = try jsonDecoder.decode(Categories.self, from: someData)
+                        let downloadedResults = try jsonDecoder.decode(Recipes.self, from: someData)
                             
-                        if downloadedResults.categories.isEmpty {
+                        if downloadedResults.meals.isEmpty {
                             DispatchQueue.main.async {
                                 //Create a UIAlertController and set the title, and alert style
                                 let alert = UIAlertController(title: "No Results Found", message: nil, preferredStyle: .alert)
@@ -132,7 +135,7 @@ extension HomeViewController: UICollectionViewDataSource {
                             }
                         } else {
                             //set our allCategories array to the downloaded results
-                            self.allCategories = downloadedResults.categories
+                            self.allMeals = downloadedResults.meals
                                 
                         }
                     } catch let error {
