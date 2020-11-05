@@ -68,7 +68,6 @@
                                         <connections>
                                             <outlet property="recipeImage" destination="uhX-Tl-lNE" id="JiL-sY-0XO"/>
                                             <outlet property="recipeName" destination="RVp-mx-Mbb" id="CzF-0V-DRb"/>
-                                            <segue destination="u9c-ad-5vl" kind="showDetail" id="jO5-i5-x8f"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -94,6 +93,7 @@
                     <connections>
                         <outlet property="collectionView" destination="hM6-0U-JnN" id="JAx-K4-sU3"/>
                         <outlet property="searchBar" destination="H5x-14-LnH" id="Wxs-iT-HzB"/>
+                        <segue destination="wG6-cz-KeH" kind="showDetail" identifier="recipeSegue" id="eU6-Aa-FdQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zq5-Aa-bUX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -322,43 +322,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X5m-io-afT">
-                                <rect key="frame" x="87" y="274" width="240" height="118"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X5m-io-afT">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="258"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZb-eh-kdc">
+                                <rect key="frame" x="12" y="227.5" width="394" height="22.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <color key="shadowColor" systemColor="labelColor"/>
+                                <size key="shadowOffset" width="-1" height="1"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="945-SB-lxh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="945-SB-lxh" firstAttribute="trailing" secondItem="X5m-io-afT" secondAttribute="trailing" constant="87" id="0eO-Ja-QmW"/>
-                            <constraint firstItem="945-SB-lxh" firstAttribute="bottom" secondItem="X5m-io-afT" secondAttribute="bottom" constant="416" id="CN8-eP-GWF"/>
-                            <constraint firstItem="X5m-io-afT" firstAttribute="leading" secondItem="945-SB-lxh" secondAttribute="leading" constant="87" id="HjD-nB-9Dv"/>
-                            <constraint firstItem="X5m-io-afT" firstAttribute="top" secondItem="945-SB-lxh" secondAttribute="top" constant="274" id="rhs-e3-hTT"/>
+                            <constraint firstItem="945-SB-lxh" firstAttribute="trailing" secondItem="X5m-io-afT" secondAttribute="trailing" id="0eO-Ja-QmW"/>
+                            <constraint firstItem="BZb-eh-kdc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="X5m-io-afT" secondAttribute="top" constant="180" id="A58-n0-FjX"/>
+                            <constraint firstItem="X5m-io-afT" firstAttribute="leading" secondItem="945-SB-lxh" secondAttribute="leading" id="HjD-nB-9Dv"/>
+                            <constraint firstItem="BZb-eh-kdc" firstAttribute="leading" secondItem="X5m-io-afT" secondAttribute="leading" constant="12" id="MQS-hU-j4F"/>
+                            <constraint firstItem="945-SB-lxh" firstAttribute="bottom" secondItem="X5m-io-afT" secondAttribute="bottom" constant="550" id="paZ-BV-cjn"/>
+                            <constraint firstItem="X5m-io-afT" firstAttribute="bottom" secondItem="BZb-eh-kdc" secondAttribute="bottom" constant="8" id="pvZ-tW-coc"/>
+                            <constraint firstItem="X5m-io-afT" firstAttribute="top" secondItem="945-SB-lxh" secondAttribute="top" id="rhs-e3-hTT"/>
+                            <constraint firstItem="X5m-io-afT" firstAttribute="trailing" secondItem="BZb-eh-kdc" secondAttribute="trailing" constant="8" id="uTI-iK-T5Z"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="recipeImage" destination="X5m-io-afT" id="lvQ-iR-B0x"/>
+                        <outlet property="recipeTitle" destination="BZb-eh-kdc" id="qSQ-LX-g6i"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cal-wR-qwz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2746" y="491"/>
-        </scene>
-        <!--RecipeDetail-->
-        <scene sceneID="o78-Az-NEc">
-            <objects>
-                <viewController title="RecipeDetail" id="u9c-ad-5vl" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="WtJ-86-nf2">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="mJa-Xf-jdM"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wCc-mm-FPH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3404" y="-309"/>
+            <point key="canvasLocation" x="2744.9275362318845" y="490.84821428571428"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="eU6-Aa-FdQ"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="barButtonItem:NuO-58-2Jj:image" width="128" height="98">
             <mutableData key="keyedArchiveRepresentation">
@@ -13896,6 +13897,9 @@ AAAAAAAAAAAAAAAADGE7A
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="questionmark.square" catalog="system" width="128" height="114"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -11,6 +11,7 @@ class SearchViewController: UIViewController {
     
     //MARK: - Properties
     var allRecipes = [Recipe]()
+    var recipeId: String?
     
     //MARK: - Outlets
     @IBOutlet var collectionView: UICollectionView!
@@ -26,24 +27,19 @@ class SearchViewController: UIViewController {
         
     }
     
-//    func setLayout() -> UICollectionViewCompositionalLayout {
-//        return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
-//
-//            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5))
-//            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//            item.contentInsets.trailing = 2
-//            item.contentInsets.leading = 2
-//
-//            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
-//            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-//
-//            let section = NSCollectionLayoutSection(group: group)
-//
-//            section.orthogonalScrollingBehavior = .paging
-//
-//            return section
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let recipeID = allRecipes[indexPath.row].idMeal {
+            recipeId = recipeID
+        }
+        
+        performSegue(withIdentifier: "recipeSegue", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? RecipeDetailViewController {
+            vc.recipeId = recipeId ?? "52773"
+        }
+    }
     
 }
 

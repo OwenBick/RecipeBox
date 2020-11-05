@@ -14,6 +14,7 @@ class RecipeDetailViewController: UIViewController {
 
     @IBOutlet var recipeImage: UIImageView!
     
+    @IBOutlet var recipeTitle: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +25,6 @@ class RecipeDetailViewController: UIViewController {
             //Call the fetchRecipes method using the constructed URL
             fetchRecipe(from: recipeUrl)
         }
-        
-        //recipeImage.image = UIImage(data: try! Data(contentsOf: URL(string: recipe[0].strMealThumb!)!))
     }
     
     //MARK: - Creating URL
@@ -57,17 +56,31 @@ class RecipeDetailViewController: UIViewController {
                         
                         //Try and decode someData into array of Recipes using Recipe template
                         let downloadedResults = try jsonDecoder.decode(RecipeDetails.self, from: someData)
-                         print(downloadedResults)
-                        if downloadedResults.recipeDetails.isEmpty {
-                            DispatchQueue.main.async {
-                                fatalError("Error downloading recipe")
-                            }
-                        } else {
-                            //set our recipe outlets
-                            print(downloadedResults)
-                            self.recipe = downloadedResults.recipeDetails
-                            
+                         
+                        if downloadedResults.meals.isEmpty {
+                            //Create a UIAlertController and set the title, and alert style
+                            let alert = UIAlertController(title: "No Results Found", message: nil, preferredStyle: .alert)
                                 
+                            //Add an action for the user to select. in this case a default action with the title "OK"
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default))
+                                
+                                
+                            //Present the alert to the user
+                            self.present(alert, animated: true, completion: nil)
+                        } else {
+                            self.recipe = downloadedResults.meals
+                            if let imageString = self.recipe[0].strMealThumb {
+                                if let imageURL = URL(string: imageString) {
+                                    if let data = try? Data(contentsOf: imageURL) {
+                                        DispatchQueue.main.async {
+                                            self.recipeImage.image = UIImage(data: data)
+                                            self.recipeTitle.text = self.recipe[0].strMeal
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            
                         }
                     } catch let error {
                         //Print the description for the error
