@@ -48,6 +48,7 @@ class FavouritesViewController: UITableViewController {
     }
          
     override func viewWillAppear(_ animated: Bool) {
+        // Load and display favourites
         loadFavourites()
     }
     
@@ -80,6 +81,7 @@ class FavouritesViewController: UITableViewController {
         return documentsDirectory
     }
     
+    // Creates and displays the favourites list
     func loadFavourites() {
         let fileUrl = getDocumentsDirectory().appendingPathComponent("favourites.txt")
         
@@ -180,30 +182,29 @@ class FavouritesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         switch  editingStyle {
         case .delete:
-//            var favRecipes: [String] = []
-//            for recipe in allRecipes {
-//                if !recipe.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-//                    favRecipes.append(recipe)
-//                }
-//
-//            }
-            if allRecipes[indexPath.row] != "\n" {
-                print(allRecipes)
-                allRecipes.remove(at: indexPath.row)
-                favouriteRecipes.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-                let file = getDocumentsDirectory().appendingPathComponent("favourites.txt")
-                var favourites = ""
-                for recipe in allRecipes {
-                    favourites += "\(recipe)\n"
-                }
-                if !favourites.isEmpty {
-                    try? favourites.write(to: file, atomically: true, encoding: String.Encoding.utf8)
-                }
-                
-                // Reload the tableView
-                self.tableView.reloadData()
+            // Filter empty strings out of allRecipes
+            allRecipes = allRecipes.filter({ $0 != ""})
+            
+            allRecipes.remove(at: indexPath.row)
+            favouriteRecipes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            // Create path to write to
+            let file = getDocumentsDirectory().appendingPathComponent("favourites.txt")
+            // Create string to build upon
+            var favourites = ""
+            // Append each recipe id to the string
+            for recipe in allRecipes {
+                favourites += "\(recipe)\n"
             }
+            print("Favourites: \(favourites)")
+            try? favourites.write(to: file, atomically: true, encoding: String.Encoding.utf8)
+            
+            print("All recipes after: \(allRecipes)")
+                
+            // Reload the tableView
+            self.tableView.reloadData()
+            
         default:
             break
         }
