@@ -40,12 +40,16 @@ class CategoryViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get destination view controller
         if let vc = segue.destination as? RecipeDetailViewController {
+            
+            // Set the recipeId
             vc.recipeId = recipe ?? "52772"
+            
         }
     }
+    
 }
-
 
 //MARK: - CollectionView Methods
 extension CategoryViewController: UICollectionViewDelegate { }
@@ -155,3 +159,5 @@ extension CategoryViewController: UICollectionViewDataSource {
             fetchTask.resume()
     }
 }
+
+

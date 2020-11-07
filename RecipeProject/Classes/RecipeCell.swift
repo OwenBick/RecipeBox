@@ -14,6 +14,8 @@ class RecipeCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        
     }
     
 }

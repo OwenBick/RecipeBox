@@ -27,7 +27,6 @@ class HomeViewController: UIViewController {
             //Call the fetchRecipes method using the constructed URL
             fetchResults(from: categoryUrl)
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -114,7 +113,7 @@ extension HomeViewController: UICollectionViewDataSource {
                         let jsonDecoder = JSONDecoder()
                         
                         
-                        //Try and decode someData into array of Recipes using Recipe template
+                        //Try and decode someData into array of Categories using Category template
                         let downloadedResults = try jsonDecoder.decode(Categories.self, from: someData)
                             
                         if downloadedResults.categories.isEmpty {
