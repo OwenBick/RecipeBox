@@ -16,6 +16,8 @@ class CategoryViewController: UIViewController {
     var categoryName: String?
     var recipe: String?
     
+    
+    //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         //Set Delegates
@@ -36,7 +38,7 @@ class CategoryViewController: UIViewController {
             recipe = recipeID
         }
         
-        performSegue(withIdentifier: "recipeSegue", sender: self)
+        performSegue(withIdentifier: "categoryToRecipeSegue", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -48,7 +50,6 @@ class CategoryViewController: UIViewController {
             
         }
     }
-    
 }
 
 //MARK: - CollectionView Methods
@@ -96,6 +97,7 @@ extension CategoryViewController: UICollectionViewDataSource {
     
     //MARK: - Creating URL
     func createCategoryUrl() -> URL? {
+        // Explictly unwrap because categoryName is set in the HomeViewController during segue
         let urlString = "https://www.themealdb.com/api/json/v1/1/filter.php?c=\(categoryName!)"
         //Return a URL using the string value
         return URL(string: urlString)

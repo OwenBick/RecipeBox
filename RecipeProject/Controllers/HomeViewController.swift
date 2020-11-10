@@ -34,12 +34,14 @@ class HomeViewController: UIViewController {
             category = categoryName
         }
         
-        performSegue(withIdentifier: "categorySegue", sender: self)
+        performSegue(withIdentifier: "homeToCategorySegue", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? CategoryViewController {
-            vc.categoryName = category ?? "Chicken"
+            if let selectedCategory = category {
+                vc.categoryName = selectedCategory
+            }
         }
     }
 }

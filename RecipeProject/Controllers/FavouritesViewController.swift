@@ -46,9 +46,11 @@ class FavouritesViewController: UITableViewController {
         
         
     }
-         
+    
+    //MARK: - ViewWillAppear
     override func viewWillAppear(_ animated: Bool) {
-        // Load and display favourites
+        
+        // Load favourites to display
         loadFavourites()
     }
     
@@ -60,14 +62,7 @@ class FavouritesViewController: UITableViewController {
         tableView.reloadData()
         
         // Set navItem title
-        navigationItem.title = "Favourites"
-        
-        
-           
-        
-        if allRecipes.isEmpty {
-            print("Empty")
-        }
+        navigationItem.title = "My Recipe Box"
     }
     
     
@@ -81,18 +76,31 @@ class FavouritesViewController: UITableViewController {
         return documentsDirectory
     }
     
+    
+    //MARK: - Load Favourites
     // Creates and displays the favourites list
     func loadFavourites() {
-        let fileUrl = getDocumentsDirectory().appendingPathComponent("favourites.txt")
         
+        // Create file path to read recipeID's from
+        let fileUrl = getDocumentsDirectory().appendingPathComponent("favourites.txt")
+            // Try and get the contents from the file
             if let favouritedRecipes = try? String(contentsOf: fileUrl) {
+                // Write the contents to the allRecipes array
                 allRecipes = favouritedRecipes.components(separatedBy: "\n")
             }
         
         //Initialize the array
         favouriteRecipes = [Recipe]()
+       
+        // Filter empty strings out of allRecipes
+        allRecipes = allRecipes.filter({ $0 != ""})
         
+        // Sort recipes id's by descending id
+        allRecipes = allRecipes.sorted(by: <)
+        
+        // For each recipeID
         for recipe in allRecipes {
+            // Create URL to fetch JSON recipe objects
             if let url = URL(string: "https://www.themealdb.com/api/json/v1/1/lookup.php?i=\(recipe)") {
                 let fetchTask = URLSession.shared.dataTask(with: url){
                     data, response, error in
@@ -130,9 +138,11 @@ class FavouritesViewController: UITableViewController {
                             } else {
                                 // Create a recipe object
                                 let favRecipe = Recipe(idMeal: downloadedResults.meals[0].idMeal, strMeal: downloadedResults.meals[0].strMeal, strCategory: downloadedResults.meals[0].strCategory, strMealThumb: downloadedResults.meals[0].strMealThumb)
-                                
+                                // Append it to the favouriteRecipes array
                                 self.favouriteRecipes.append(favRecipe)
                                 
+                                //Sort list by descending recipeID
+                                self.favouriteRecipes  = self.favouriteRecipes.sorted { $0.idMeal! < $1.idMeal! }
                             }
                         } catch let error {
                             //Print the description for the error
@@ -152,6 +162,7 @@ class FavouritesViewController: UITableViewController {
             }
             
         }
+        
         tableView.reloadData()
     }
     
@@ -161,6 +172,7 @@ class FavouritesViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Unwrap the selected recipe id
         if let recipeID = favouriteRecipes[indexPath.row].idMeal {
             recipe = recipeID
         }
@@ -182,12 +194,20 @@ class FavouritesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         switch  editingStyle {
         case .delete:
-            // Filter empty strings out of allRecipes
-            allRecipes = allRecipes.filter({ $0 != ""})
             
-            allRecipes.remove(at: indexPath.row)
-            favouriteRecipes.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            // If the ids match
+            if allRecipes[indexPath.row] == favouriteRecipes[indexPath.row].idMeal {
+                //Go ahead and remove objects
+                allRecipes.remove(at: indexPath.row)
+                favouriteRecipes.remove(at: indexPath.row)
+                
+                //Deletes row from tableView
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            } else {
+                print("Error deleting")
+                
+            }
+            
             
             // Create path to write to
             let file = getDocumentsDirectory().appendingPathComponent("favourites.txt")
@@ -213,8 +233,6 @@ class FavouritesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favouriteRecipes.count
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavouritesCell", for: indexPath) as! FavouriteCell
