@@ -77,7 +77,6 @@ extension HomeViewController: UICollectionViewDataSource {
                     if let image = UIImage(data: data) {
                         //If so set the recipe image to the UIImage you just created
                         cell.categoryImage.image = image
-                        cell.categoryImage.layer.cornerRadius = 8
                     } else {
                         //If not set the recipe image to the '' SF Symbol
                         cell.categoryImage.image = UIImage(systemName: "questionmark.square")

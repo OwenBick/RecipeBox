@@ -119,6 +119,18 @@ extension SearchViewController: UICollectionViewDataSource {
                 do {
                     //Check for data if not stop execution
                     guard let someData = data else {
+                        //Clear search bar
+                        self.searchBar.text = ""
+                        //Create a UIAlertController and set the title, and alert style
+                        let alert = UIAlertController(title: "No Results Found", message: nil, preferredStyle: .alert)
+                        
+                        //Add an action for the user to select. in this case a default action with the title "OK"
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default))
+                        
+                        
+                        //Present the alert to the user
+                        self.present(alert, animated: true, completion: nil)
+                        self.collectionView.reloadData()
                         return
                     }
                     
@@ -127,40 +139,32 @@ extension SearchViewController: UICollectionViewDataSource {
                     
                     //Try and decode someData into array of Recipes using Recipe template
                     let downloadedResults = try jsonDecoder.decode(Recipes.self, from: someData)
+                    print(downloadedResults.meals.isEmpty)
                     
-                    if downloadedResults.meals.isEmpty {
-                        DispatchQueue.main.async {
-                            //Clear search bar
-                            self.searchBar.text = ""
-                            //Create a UIAlertController and set the title, and alert style
-                            let alert = UIAlertController(title: "No Results Found", message: nil, preferredStyle: .alert)
-                            
-                            //Add an action for the user to select. in this case a default action with the title "OK"
-                            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default))
-                            
-                            
-                            //Present the alert to the user
-                            self.present(alert, animated: true, completion: nil)
-                            self.collectionView.reloadData()
-                        }
-                    } else {
-                        //set our allRecipes array to the downloaded results
-                        self.allRecipes = downloadedResults.meals
-                        
-                    }
-                    
-                    
+                    //set our allRecipes array to the downloaded results
+                    self.allRecipes = downloadedResults.meals
                     
                 } catch let error {
-                    //Print the description for the error
-                    print("Problem decoding: \(error.localizedDescription)")
-                    //Print the error
-                    print(error)
-                }
-                
-                //Use main thread to perform updates
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
+                    // Use the main thread to update
+                    DispatchQueue.main.async {
+                        //Print the description for the error
+                        print("Problem decoding: \(error.localizedDescription)")
+                        //Print the error
+                        print(error)
+                        //Clear search bar
+                        self.searchBar.text = ""
+                        //Create a UIAlertController and set the title, and alert style
+                        let alert = UIAlertController(title: "No Results Found", message: nil, preferredStyle: .alert)
+                        
+                        //Add an action for the user to select. in this case a default action with the title "OK"
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default))
+                        
+                        
+                        //Present the alert to the user
+                        self.present(alert, animated: true, completion: nil)
+                        self.collectionView.reloadData()
+                    }
+                    
                 }
             }
         }

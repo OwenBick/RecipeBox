@@ -63,7 +63,6 @@ extension CategoryViewController: UICollectionViewDataSource {
         return allMeals.count
     }
     
-
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCell", for: indexPath) as! RecipeCell
