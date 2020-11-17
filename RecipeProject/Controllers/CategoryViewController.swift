@@ -55,8 +55,22 @@ class CategoryViewController: UIViewController {
 //MARK: - CollectionView Methods
 extension CategoryViewController: UICollectionViewDelegate { }
 
+extension CategoryViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let screenWidth = UIScreen.main.bounds.width
+        switch screenWidth {
+        case 414:
+            return CGSize(width: (screenWidth - 10)/2, height: (screenWidth - 10)/2)
+        case let width where width > 414:
+            return CGSize(width: (screenWidth - 10)/3, height: (screenWidth - 10)/3)
+        default:
+            return CGSize(width: screenWidth, height: screenWidth)
+        }
+    }
+}
 
 extension CategoryViewController: UICollectionViewDataSource {
+    
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -49,6 +49,19 @@ extension SearchViewController: UICollectionViewDelegate {
     
 }
 
+extension SearchViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let screenWidth = UIScreen.main.bounds.width
+        switch screenWidth {
+        case 414:
+            return CGSize(width: (screenWidth - 10)/2, height: (screenWidth - 10)/2)
+        case let width where width > 414:
+            return CGSize(width: (screenWidth - 10)/3, height: (screenWidth - 10)/3)
+        default:
+            return CGSize(width: screenWidth, height: screenWidth)
+        }
+    }
+}
 
 extension SearchViewController: UICollectionViewDataSource {
     
@@ -139,10 +152,13 @@ extension SearchViewController: UICollectionViewDataSource {
                     
                     //Try and decode someData into array of Recipes using Recipe template
                     let downloadedResults = try jsonDecoder.decode(Recipes.self, from: someData)
-                    print(downloadedResults.meals.isEmpty)
                     
                     //set our allRecipes array to the downloaded results
                     self.allRecipes = downloadedResults.meals
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+
+                    }
                     
                 } catch let error {
                     // Use the main thread to update
